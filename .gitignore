@@ -1,0 +1,25 @@
+# Godot
+.import/
+.export/
+.export_presets.cfg
+
+# Mono
+.mono/
+data_*/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+bin/
+obj/
+*.csproj
+*.sln
+*.user
+
+# User-specific
+*.godot/editor_settings-*.txt
+
+# Logs
+*.log
