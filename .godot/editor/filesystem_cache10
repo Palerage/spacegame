@@ -1,3 +1,11 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1751540163
-icon.svg::CompressedTexture2D::1461664469519043395::1751540155::1751540164::1::::<><><>0<>0<>0e1461f9f26e1a411ba882f0a9081d5f<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://::1751709072
+icon.svg::CompressedTexture2D/CompressedTexture2D::1461664469519043395::1751540155::1751540164::1::::<><><>0<>0<>0e1461f9f26e1a411ba882f0a9081d5f<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://art/::1751705384
+miniplane.png::CompressedTexture2D/CompressedTexture2D::6070380277135300088::1751705187::1751705378::1::::<><><>0<>0<>120efa5c58f2171b78c01f27a0d5328a<>res://.godot/imported/miniplane.png-9d7a9a4879c65f79895360623e861a86.ctex::
+::res://scenes/::1751708631
+game.tscn::PackedScene::3766723469877046352::1751708631::0::1::::<><><>0<>0<><>::uid://cdkdu6ho7navy::::res://scenes/player.tscn
+player.tscn::PackedScene::5004271182414150090::1751708609::0::1::::<><><>0<>0<><>::uid://c6yu64rkxwick::::res://scripts/Player.cs<>uid://csqsjnmsteyls::::res://art/miniplane.png
+::res://scripts/::1751547469
+Player.cs::CSharpScript::6999511835653814926::1751708455::0::1::::<>CharacterBody2D<><>0<>0<><>::
+WorldGenerator.cs::CSharpScript::5659568901323843919::1751549758::0::1::::<>Node2D<><>0<>0<><>::

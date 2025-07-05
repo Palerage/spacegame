@@ -1,0 +1,9 @@
+Sprite2D
+WorldEnvironment
+AnimationPlayer
+Camera2D
+CollisionShape2D
+CharacterBody2D
+Sprite3D
+Node3D
+Area2D

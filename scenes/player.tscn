@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdkdu6ho7navy"]
+
+[ext_resource type="Script" uid="uid://c6yu64rkxwick" path="res://scripts/Player.cs" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://csqsjnmsteyls" path="res://art/miniplane.png" id="2_g2els"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
+size = Vector2(26, 26)
+
+[node name="Player" type="CharacterBody2D"]
+physics_interpolation_mode = 1
+texture_filter = 1
+script = ExtResource("1_g2els")
+Acceleration = 600.0
+PlayerColor = Color(0.94, 0.1786, 0.50854, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_g2els")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_g2els")
