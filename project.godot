@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=640
+window/size/viewport_width=480
 window/size/viewport_height=352
 window/size/mode=4
 window/stretch/mode="canvas_items"
@@ -95,6 +95,6 @@ common/physics_interpolation=true
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.101904, 0.228692, 0.36719, 1)
+environment/defaults/default_clear_color=Color(0.1185, 0.133725, 0.15, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true

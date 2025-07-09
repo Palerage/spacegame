@@ -1,7 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgajmle10gs32"]
+[gd_scene load_steps=8 format=3 uid="uid://dgajmle10gs32"]
 
 [ext_resource type="Script" uid="uid://4hxoqxjcpnw2" path="res://scripts/Bullet.cs" id="1_y25gk"]
+[ext_resource type="Shader" uid="uid://knebxwicph0w" path="res://shaders/bullet.gdshader" id="2_eoqba"]
 [ext_resource type="Texture2D" uid="uid://cvqklfxlfp60p" path="res://art/bullet.png" id="2_l5glv"]
+
+[sub_resource type="Curve" id="Curve_l5glv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_l5glv"]
+colors = PackedColorArray(0.73, 0.2409, 0.273507, 0, 0.73, 0.2409, 0.273507, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qncy5"]
+shader = ExtResource("2_eoqba")
+shader_parameter/pulse_speed = 10.0
+shader_parameter/glow_intensity = 0.75
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8qja"]
 radius = 3.16228
@@ -9,7 +22,13 @@ radius = 3.16228
 [node name="Bullet" type="Area2D"]
 script = ExtResource("1_y25gk")
 
+[node name="Trail" type="Line2D" parent="."]
+width = 2.0
+width_curve = SubResource("Curve_l5glv")
+gradient = SubResource("Gradient_l5glv")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_qncy5")
 texture = ExtResource("2_l5glv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

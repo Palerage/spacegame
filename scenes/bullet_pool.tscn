@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://cv7liakfmbgc4"]
+
+[ext_resource type="PackedScene" uid="uid://dgajmle10gs32" path="res://scenes/bullet.tscn" id="2_enkih"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_n0c2w"]
+script/source = "using Godot;
+using System.Collections.Generic;
+
+public partial class BulletPool : Node
+{
+    [Export] public PackedScene BulletScene;
+    [Export] public int PoolSize = 200;
+
+    private List<Bullet> _bullets = new List<Bullet>();
+
+    public override void _Ready()
+    {
+        // Skapa poolen
+        for (int i = 0; i < PoolSize; i++)
+        {
+            var bulletInstance = (Bullet)BulletScene.Instantiate();
+            bulletInstance.Visible = false;  // Dölj bullet från början
+            AddChild(bulletInstance);
+            _bullets.Add(bulletInstance);
+        }
+    }
+
+    // Hämta en ledig bullet från poolen
+    public Bullet GetBullet()
+    {
+        foreach (var bullet in _bullets)
+        {
+            if (!bullet.Visible)  // Om bullet inte är aktiv
+            {
+                bullet.Visible = true;
+                bullet.Show();
+                return bullet;
+            }
+        }
+        return null; // Alla bullets används just nu
+    }
+}
+"
+
+[node name="BulletPool" type="Node2D"]
+script = SubResource("CSharpScript_n0c2w")
+BulletScene = ExtResource("2_enkih")
+PoolSize = null

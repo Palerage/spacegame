@@ -9,6 +9,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(26, 26)
 
+[sub_resource type="Animation" id="Animation_dqkch"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Graphics/Propeller:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_qhqgy"]
 resource_name = "fly"
 length = 0.4
@@ -26,21 +41,6 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
-[sub_resource type="Animation" id="Animation_dqkch"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Graphics/Propeller:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qlg0r"]
 _data = {
 &"RESET": SubResource("Animation_dqkch"),
@@ -55,17 +55,19 @@ Speed = 180.0
 Acceleration = 500.0
 Friction = 360.0
 BulletScene = ExtResource("2_qlg0r")
-DamageAreaBulletCount = 8
+SingleShotPoint = NodePath("Points/Single/Marker2D")
+DoubleShotPoints = Array[NodePath]([NodePath("Points/Double/Marker2D"), NodePath("Points/Double/Marker2D2")])
+DamageAreaPoint = NodePath("Points/DamageArea/Marker2D")
+DamageAreaBulletCount = 6
 DamageAreaRadius = 32.0
 DamageAreaSpeed = 200.0
-BodyColor = Color(0.406175, 0.77, 0.1463, 1)
-WingColor = Color(0.89, 0.2314, 0.2314, 1)
+BodyColor = Color(0.126, 0.546, 0.63, 1)
+WingColor = Color(0.83, 0.83, 0.83, 1)
 
 [node name="Graphics" type="Node2D" parent="."]
 
 [node name="Propeller" type="Sprite2D" parent="Graphics"]
 texture_filter = 1
-position = Vector2(0, 1)
 texture = ExtResource("2_dqkch")
 hframes = 4
 
@@ -94,10 +96,10 @@ position = Vector2(0, -17)
 [node name="Double" type="Node2D" parent="Points"]
 
 [node name="Marker2D" type="Marker2D" parent="Points/Double"]
-position = Vector2(-12, -10)
+position = Vector2(-13, -10)
 
 [node name="Marker2D2" type="Marker2D" parent="Points/Double"]
-position = Vector2(12, -10)
+position = Vector2(13, -10)
 
 [node name="DamageArea" type="Node2D" parent="Points"]
 

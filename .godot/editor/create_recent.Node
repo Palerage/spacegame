@@ -1,3 +1,6 @@
+VisibleOnScreenNotifier2D
+WorldEnvironment
+Line2D
 CollisionShape2D
 Sprite2D
 Area2D
@@ -5,7 +8,6 @@ Node2D
 Marker2D
 Node
 AnimationPlayer
-WorldEnvironment
 Camera2D
 CharacterBody2D
 Sprite3D
