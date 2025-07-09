@@ -1,15 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgajmle10gs32"]
+[gd_scene load_steps=10 format=3 uid="uid://dgajmle10gs32"]
 
 [ext_resource type="Script" uid="uid://4hxoqxjcpnw2" path="res://scripts/Bullet.cs" id="1_y25gk"]
 [ext_resource type="Shader" uid="uid://knebxwicph0w" path="res://shaders/bullet.gdshader" id="2_eoqba"]
 [ext_resource type="Texture2D" uid="uid://cvqklfxlfp60p" path="res://art/bullet.png" id="2_l5glv"]
 
 [sub_resource type="Curve" id="Curve_l5glv"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.101036, 0), 0.0, 0.00350696, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_l5glv"]
-colors = PackedColorArray(0.73, 0.2409, 0.273507, 0, 0.73, 0.2409, 0.273507, 1)
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(0.8, 0.168, 0.168, 0, 0.8, 0.168, 0.168, 0.8)
+metadata/_snap_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qncy5"]
 shader = ExtResource("2_eoqba")
@@ -19,8 +21,21 @@ shader_parameter/glow_intensity = 0.75
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8qja"]
 radius = 3.16228
 
+[sub_resource type="Gradient" id="Gradient_eoqba"]
+offsets = PackedFloat32Array(0, 0.207386, 0.721591)
+colors = PackedColorArray(1, 1, 1, 1, 0.903409, 0.903409, 0.903409, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qncy5"]
+gradient = SubResource("Gradient_eoqba")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
 [node name="Bullet" type="Area2D"]
 script = ExtResource("1_y25gk")
+Speed = 500.0
 
 [node name="Trail" type="Line2D" parent="."]
 width = 2.0
@@ -33,3 +48,8 @@ texture = ExtResource("2_l5glv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_v8qja")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.85, 0.85, 0.442, 1)
+energy = 0.15
+texture = SubResource("GradientTexture2D_qncy5")

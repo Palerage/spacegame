@@ -51,18 +51,17 @@ _data = {
 physics_interpolation_mode = 1
 texture_filter = 1
 script = ExtResource("1_g2els")
-Speed = 180.0
 Acceleration = 500.0
 Friction = 360.0
+TurboMultiplier = 2.0
 BulletScene = ExtResource("2_qlg0r")
 SingleShotPoint = NodePath("Points/Single/Marker2D")
 DoubleShotPoints = Array[NodePath]([NodePath("Points/Double/Marker2D"), NodePath("Points/Double/Marker2D2")])
 DamageAreaPoint = NodePath("Points/DamageArea/Marker2D")
-DamageAreaBulletCount = 6
-DamageAreaRadius = 32.0
+DamageAreaRadius = 48.0
 DamageAreaSpeed = 200.0
-BodyColor = Color(0.126, 0.546, 0.63, 1)
-WingColor = Color(0.83, 0.83, 0.83, 1)
+BodyColor = Color(0.09, 0.45, 0.414, 1)
+WingColor = Color(0.506567, 0.91, 0.2184, 1)
 
 [node name="Graphics" type="Node2D" parent="."]
 

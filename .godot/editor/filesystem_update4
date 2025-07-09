@@ -1,11 +1,6 @@
+res://scenes/bullet.tscn
+res://shaders/bullet.gdshader
 res://scenes/game.tscn
 res://scenes/player.tscn
-res://scenes/bullet.tscn
-res://scenes/bullet.gdshader
-res://scripts/Bullet.cs
-res://scripts/WorldGenerator.cs
-res://scripts/Player.cs
-res://shaders/bullet.gdshader
-res://shaders/wobble.gdshader
-res://scripts/BulletPool.cs
 res://scenes/bullet_pool.tscn
+res://shaders/water.gdshader
