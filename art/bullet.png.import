@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csqsjnmsteyls"
-path="res://.godot/imported/miniplane.png-9d7a9a4879c65f79895360623e861a86.ctex"
+uid="uid://cvqklfxlfp60p"
+path="res://.godot/imported/bullet.png-7adc94fbe6e31c193382926bba42bd83.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/miniplane.png"
-dest_files=["res://.godot/imported/miniplane.png-9d7a9a4879c65f79895360623e861a86.ctex"]
+source_file="res://art/bullet.png"
+dest_files=["res://.godot/imported/bullet.png-7adc94fbe6e31c193382926bba42bd83.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

@@ -1,14 +1,24 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
     [Export] public float Speed { get; private set; } = 200f;
     [Export] public float Acceleration { get; private set; } = 800f;
     [Export] public float Friction { get; private set; } = 600f;
-    [Export] public float TurboMultiplier = 2;
+    [Export] public float TurboMultiplier = 1.5f;
 
-    [Export] public Color PlayerColor = Colors.White; // <--- Färg direkt i editorn
+    [Export] public PackedScene BulletScene;
+    [Export] public int DamageAreaBulletCount = 3;
+    [Export] public float DamageAreaRadius = 50f;
+    [Export] public float DamageAreaSpeed = 90f;
+
+    private List<Area2D> _damageAreaBullets = new();
+    private List<float> _damageAreaAngles = new();
+
+    [Export] public Color BodyColor = Colors.White;
+    [Export] public Color WingColor = Colors.White;
 
     private Vector2 _inputDirection = Vector2.Zero;
     private bool _turbo;
@@ -17,13 +27,20 @@ public partial class Player : CharacterBody2D
     {
         CenterPlayer();
         ApplyPlayerColor();
-
+        CallDeferred(nameof(ActivateDamageArea));
     }
 
     public override void _PhysicsProcess(double delta)
     {
         GetInput();
+        UpdateDamageAreaBullet(delta);
         MovePlayer(delta);
+
+        if (Input.IsActionJustPressed("fire"))
+        {
+            Fire();
+            FireDouble();
+        }
     }
 
     private void GetInput()
@@ -71,11 +88,22 @@ public partial class Player : CharacterBody2D
 
     private void ApplyPlayerColor()
     {
-        var sprite = GetNodeOrNull<Sprite2D>("Sprite2D");
-        if (sprite != null)
+        var graphics = GetNodeOrNull<Node2D>("Graphics");
+        if (graphics == null) return;
+
+        var body = graphics.GetNodeOrNull<Sprite2D>("Body");
+        var wing = graphics.GetNodeOrNull<Sprite2D>("Wing");
+
+        if (body != null)
         {
-            sprite.Modulate = PlayerColor;
-            sprite.QueueRedraw();
+            body.Modulate = BodyColor;
+            body.QueueRedraw();
+        }
+
+        if (wing != null)
+        {
+            wing.Modulate = WingColor;
+            wing.QueueRedraw();
         }
     }
 
@@ -113,5 +141,110 @@ public partial class Player : CharacterBody2D
             Mathf.Clamp(Position.X, minX, maxX),
             Mathf.Clamp(Position.Y, minY, maxY)
         );
+    }
+
+    private void Fire()
+    {
+        // 1. Hämta spawnpunkten
+        var marker = GetNodeOrNull<Marker2D>("Points/Single/Marker2D");
+        if (marker == null || BulletScene == null)
+        {
+            GD.PrintErr("Marker or BulletScene missing!");
+            return;
+        }
+
+        // 2. Skapa instansen
+        var bulletInstance = BulletScene.Instantiate<Area2D>();
+
+        // 3. Sätt position vid marker
+        bulletInstance.GlobalPosition = marker.GlobalPosition;
+
+        // 4. Lägg till i scenen
+        GetTree().CurrentScene.AddChild(bulletInstance);
+
+        // 5. Sätt riktning/hastighet om din bullet behöver det
+        var bulletScript = bulletInstance as Bullet;
+        if (bulletScript != null)
+        {
+            bulletScript.Direction = Vector2.Up; // exempel
+        }
+    }
+
+    private void FireDouble()
+    {
+        var doubleNode = GetNodeOrNull<Node2D>("Points/Double");
+        if (doubleNode == null || BulletScene == null)
+        {
+            GD.PrintErr("Double node or BulletScene missing!");
+            return;
+        }
+
+        foreach (var child in doubleNode.GetChildren())
+        {
+            if (child is Marker2D marker)
+            {
+                // Skapa instans
+                var bulletInstance = BulletScene.Instantiate<Area2D>();
+                bulletInstance.GlobalPosition = marker.GlobalPosition;
+                GetTree().CurrentScene.AddChild(bulletInstance);
+
+                if (bulletInstance is Bullet bulletScript)
+                {
+                    bulletScript.Direction = Vector2.Up;
+                }
+            }
+        }
+    }
+
+    private void ActivateDamageArea()
+    {
+        if (BulletScene == null)
+        {
+            GD.PrintErr("BulletScene saknas!");
+            return;
+        }
+
+        var marker = GetNodeOrNull<Marker2D>("Points/DamageArea/Marker2D");
+        if (marker == null)
+        {
+            GD.PrintErr("Marker2D i DamageArea saknas!");
+            return;
+        }
+
+        _damageAreaBullets.Clear();
+        _damageAreaAngles.Clear();
+
+        for (int i = 0; i < DamageAreaBulletCount; i++)
+        {
+            var bullet = BulletScene.Instantiate<Area2D>();
+            GetTree().CurrentScene.CallDeferred("add_child", bullet);
+
+            // Fördela vinklar jämnt runt cirkeln
+            float angle = i * (360f / DamageAreaBulletCount);
+            _damageAreaAngles.Add(angle);
+
+            _damageAreaBullets.Add(bullet);
+        }
+    }
+
+    private void UpdateDamageAreaBullet(double delta)
+    {
+        if (_damageAreaBullets.Count == 0)
+            return;
+
+        var marker = GetNodeOrNull<Marker2D>("Points/DamageArea/Marker2D");
+        if (marker == null)
+            return;
+
+        for (int i = 0; i < _damageAreaBullets.Count; i++)
+        {
+            _damageAreaAngles[i] += DamageAreaSpeed * (float)delta;
+            if (_damageAreaAngles[i] >= 360f)
+                _damageAreaAngles[i] -= 360f;
+
+            float radians = Mathf.DegToRad(_damageAreaAngles[i]);
+            Vector2 offset = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * DamageAreaRadius;
+            _damageAreaBullets[i].GlobalPosition = marker.GlobalPosition + offset;
+        }
     }
 }

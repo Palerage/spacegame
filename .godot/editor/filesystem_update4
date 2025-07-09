@@ -1,2 +1,7 @@
 res://scenes/game.tscn
 res://scenes/player.tscn
+res://scripts/Player.cs
+res://scripts/WorldGenerator.cs
+res://bullet.tscn
+res://scripts/Bullet.cs
+res://scenes/bullet.tscn
