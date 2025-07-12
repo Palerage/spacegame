@@ -2,33 +2,34 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+public enum ElementType
+{
+    Neutral,
+    Fire,
+    Ice,
+    Poison,
+    Electric
+}
+
 public partial class Player : CharacterBody2D
 {
     [ExportCategory("Movement")]
     [Export] public float Speed { get; private set; } = 200f;
-    [Export] public float Acceleration { get; private set; } = 800f;
-    [Export] public float Friction { get; private set; } = 600f;
-    [Export] public float TurboMultiplier = 1.5f;
+    [Export] public float Acceleration { get; private set; } = 200f;
+    [Export] public float Friction { get; private set; } = 200f;
+    [Export] public float TurboMultiplier = 1.2f;
 
     [ExportCategory("Weapons")]
-    [Export] public PackedScene BulletScene;
+    [Export] public WeaponBase LightWeapon { get; set; }
+    [Export] public WeaponBase HeavyWeapon { get; set; }
 
-    [ExportCategory("SpawnPoints")]
-    [Export] public NodePath SingleShotPoint;
-    [Export] public NodePath[] DoubleShotPoints;
-    [Export] public NodePath DamageAreaPoint;
-
-    [ExportCategory("Damage Radius")]
-    [Export] public int DamageAreaBulletCount = 3;
-    [Export] public float DamageAreaRadius = 50f;
-    [Export] public float DamageAreaSpeed = 90f;
-
-    private List<Area2D> _damageAreaBullets = new();
-    private List<float> _damageAreaAngles = new();
 
     [ExportCategory("Cosmetics")]
     [Export] public Color BodyColor = Colors.White;
     [Export] public Color WingColor = Colors.White;
+
+    [ExportCategory("Elemental Buffs")]
+    public ElementType ActiveElementType { get; set; } = ElementType.Neutral;
 
     private Vector2 _inputDirection = Vector2.Zero;
     private bool _turbo;
@@ -37,20 +38,14 @@ public partial class Player : CharacterBody2D
     {
         CenterPlayer();
         ApplyPlayerColor();
-        CallDeferred(nameof(ActivateDamageArea));
     }
 
     public override void _PhysicsProcess(double delta)
     {
         GetInput();
-        UpdateDamageAreaBullet(delta);
         MovePlayer(delta);
-
-        if (Input.IsActionJustPressed("fire"))
-        {
-            Fire();
-            FireDouble();
-        }
+        Fire(delta);
+        HandleElementToggleInput();
     }
 
     private void GetInput()
@@ -83,6 +78,43 @@ public partial class Player : CharacterBody2D
 
         MoveAndSlide();
         ClampPositionToScreen();
+    }
+
+    private void Fire(double delta)
+    {
+
+        if (Input.IsActionPressed("fire_light"))
+        {
+            LightWeapon.Fire(this);
+        }
+        else if (Input.IsActionPressed("fire_heavy"))
+        {
+            HeavyWeapon.Fire(this);
+        }
+    }
+    public void ApplyBuff(ElementType element, float buffAmount)
+    {
+        if (BuffManager.Instance.ElementalDamageBuffs.ContainsKey(element))
+        {
+            BuffManager.Instance.ElementalDamageBuffs[element] = buffAmount;
+        }
+    }
+
+    private void HandleElementToggleInput()
+    {
+        ElementType[] elementTypes = (ElementType[])Enum.GetValues(typeof(ElementType));
+        int currentIndex = Array.IndexOf(elementTypes, ActiveElementType);
+
+        if (Input.IsActionJustPressed("left_toggle_element"))
+        {
+            int prevIndex = (currentIndex - 1 + elementTypes.Length) % elementTypes.Length;
+            ActiveElementType = elementTypes[prevIndex]; GD.Print($"Active Element changed to: {ActiveElementType}");
+        }
+        else if (Input.IsActionJustPressed("right_toggle_element"))
+        {
+            int nextIndex = (currentIndex + 1) % elementTypes.Length;
+            ActiveElementType = elementTypes[nextIndex];
+        }
     }
 
     private void CenterPlayer()
@@ -122,74 +154,5 @@ public partial class Player : CharacterBody2D
             Mathf.Clamp(Position.X, halfExtents.X, screenSize.X - halfExtents.X),
             Mathf.Clamp(Position.Y, halfExtents.Y, screenSize.Y - halfExtents.Y)
         );
-    }
-
-    private void Fire()
-    {
-        if (BulletScene == null || SingleShotPoint == null) return;
-
-        var marker = GetNodeOrNull<Marker2D>(SingleShotPoint);
-        if (marker == null) return;
-
-        var bulletInstance = BulletScene.Instantiate<Area2D>();
-        bulletInstance.GlobalPosition = marker.GlobalPosition;
-        GetTree().CurrentScene.AddChild(bulletInstance);
-
-        if (bulletInstance is Bullet bulletScript)
-            bulletScript.Direction = Vector2.Up;
-    }
-
-    private void FireDouble()
-    {
-        if (BulletScene == null || DoubleShotPoints == null) return;
-
-        foreach (var path in DoubleShotPoints)
-        {
-            var marker = GetNodeOrNull<Marker2D>(path);
-            if (marker == null) continue;
-
-            var bulletInstance = BulletScene.Instantiate<Area2D>();
-            bulletInstance.GlobalPosition = marker.GlobalPosition;
-            GetTree().CurrentScene.AddChild(bulletInstance);
-
-            if (bulletInstance is Bullet bulletScript)
-                bulletScript.Direction = Vector2.Up;
-        }
-    }
-
-    private void ActivateDamageArea()
-    {
-        if (BulletScene == null || DamageAreaPoint == null) return;
-
-        var marker = GetNodeOrNull<Marker2D>(DamageAreaPoint);
-        if (marker == null) return;
-
-        _damageAreaBullets.Clear();
-        _damageAreaAngles.Clear();
-
-        for (int i = 0; i < DamageAreaBulletCount; i++)
-        {
-            var bullet = BulletScene.Instantiate<Area2D>();
-            GetTree().CurrentScene.CallDeferred("add_child", bullet);
-
-            _damageAreaBullets.Add(bullet);
-            _damageAreaAngles.Add(i * (360f / DamageAreaBulletCount));
-        }
-    }
-
-    private void UpdateDamageAreaBullet(double delta)
-    {
-        if (_damageAreaBullets.Count == 0 || DamageAreaPoint == null) return;
-
-        var marker = GetNodeOrNull<Marker2D>(DamageAreaPoint);
-        if (marker == null) return;
-
-        for (int i = 0; i < _damageAreaBullets.Count; i++)
-        {
-            _damageAreaAngles[i] = (_damageAreaAngles[i] + DamageAreaSpeed * (float)delta) % 360f;
-            float radians = Mathf.DegToRad(_damageAreaAngles[i]);
-            Vector2 offset = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * DamageAreaRadius;
-            _damageAreaBullets[i].GlobalPosition = marker.GlobalPosition + offset;
-        }
     }
 }

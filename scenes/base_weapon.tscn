@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://co6mqmi2nj35s"]
+
+[ext_resource type="Script" uid="uid://b4cml4yxo48uk" path="res://scripts/WeaponBase.cs" id="1_6fama"]
+[ext_resource type="PackedScene" uid="uid://bs0526xx2pb45" path="res://scenes/base_bullet.tscn" id="2_5qynp"]
+[ext_resource type="Script" uid="uid://ba0g5msb5lig4" path="res://scripts/BulletDirection.cs" id="3_menj3"]
+
+[node name="BaseWeapon" type="Node2D"]
+script = ExtResource("1_6fama")
+BulletSpawnPoints = NodePath("BulletSpawnPoints")
+NeutralBulletScene = ExtResource("2_5qynp")
+FireBulletScene = ExtResource("2_5qynp")
+IceBulletScene = ExtResource("2_5qynp")
+PoisonBulletScene = ExtResource("2_5qynp")
+ElectricBulletScene = ExtResource("2_5qynp")
+
+[node name="BulletSpawnPoints" type="Node2D" parent="."]
+
+[node name="SingleBarrel" type="Node2D" parent="BulletSpawnPoints"]
+
+[node name="Marker2D" type="Marker2D" parent="BulletSpawnPoints/SingleBarrel"]
+position = Vector2(0, -18)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="DoubleBarrel" type="Node2D" parent="BulletSpawnPoints"]
+
+[node name="Marker2D" type="Marker2D" parent="BulletSpawnPoints/DoubleBarrel"]
+position = Vector2(-15, -10)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="Marker2D2" type="Marker2D" parent="BulletSpawnPoints/DoubleBarrel"]
+position = Vector2(15, -10)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="TripleBarrel" type="Node2D" parent="BulletSpawnPoints"]
+
+[node name="Marker2D" type="Marker2D" parent="BulletSpawnPoints/TripleBarrel"]
+position = Vector2(-15, -10)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="Marker2D2" type="Marker2D" parent="BulletSpawnPoints/TripleBarrel"]
+position = Vector2(0, -18)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="Marker2D3" type="Marker2D" parent="BulletSpawnPoints/TripleBarrel"]
+position = Vector2(15, -10)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="Spread" type="Node2D" parent="BulletSpawnPoints"]
+
+[node name="Up" type="Marker2D" parent="BulletSpawnPoints/Spread"]
+position = Vector2(0, -18)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, -1)
+
+[node name="Down" type="Marker2D" parent="BulletSpawnPoints/Spread"]
+position = Vector2(0, 18)
+script = ExtResource("3_menj3")
+Direction = Vector2(0, 1)
+
+[node name="Left" type="Marker2D" parent="BulletSpawnPoints/Spread"]
+position = Vector2(-18, -4)
+script = ExtResource("3_menj3")
+Direction = Vector2(-1, 0)
+
+[node name="Right" type="Marker2D" parent="BulletSpawnPoints/Spread"]
+position = Vector2(18, -4)
+script = ExtResource("3_menj3")
+Direction = Vector2(1, 0)

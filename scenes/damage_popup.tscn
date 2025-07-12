@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://hn5xuiw1h7u1"]
+
+[ext_resource type="Script" uid="uid://ctha0y7ygq5ji" path="res://scripts/DamagePopup.cs" id="1_m8tyv"]
+
+[node name="DamagePopup" type="Label"]
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_m8tyv")

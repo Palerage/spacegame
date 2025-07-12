@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://c6yu64rkxwick" path="res://scripts/Player.cs" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://ch7coctju6sn" path="res://art/Propeller.png" id="2_dqkch"]
-[ext_resource type="PackedScene" uid="uid://dgajmle10gs32" path="res://scenes/bullet.tscn" id="2_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://dnqjucej66u8f" path="res://art/body-export.png" id="3_dqkch"]
 [ext_resource type="Texture2D" uid="uid://dvneflkm2q3w1" path="res://art/wings.png" id="4_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://co6mqmi2nj35s" path="res://scenes/base_weapon.tscn" id="6_fjrip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(26, 26)
@@ -47,21 +47,18 @@ _data = {
 &"fly": SubResource("Animation_qhqgy")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("LightWeapon", "HeavyWeapon")]
 physics_interpolation_mode = 1
 texture_filter = 1
 script = ExtResource("1_g2els")
-Acceleration = 500.0
-Friction = 360.0
-TurboMultiplier = 2.0
-BulletScene = ExtResource("2_qlg0r")
-SingleShotPoint = NodePath("Points/Single/Marker2D")
-DoubleShotPoints = Array[NodePath]([NodePath("Points/Double/Marker2D"), NodePath("Points/Double/Marker2D2")])
-DamageAreaPoint = NodePath("Points/DamageArea/Marker2D")
-DamageAreaRadius = 48.0
-DamageAreaSpeed = 200.0
-BodyColor = Color(0.09, 0.45, 0.414, 1)
-WingColor = Color(0.506567, 0.91, 0.2184, 1)
+Speed = 500.0
+Acceleration = 800.0
+Friction = 800.0
+TurboMultiplier = 1.5
+LightWeapon = NodePath("LightWeapon")
+HeavyWeapon = NodePath("HeavyWeapon")
+BodyColor = Color(0.71, 0.0994, 0.0994, 1)
+WingColor = Color(0.126, 0.3582, 0.9, 1)
 
 [node name="Graphics" type="Node2D" parent="."]
 
@@ -85,21 +82,15 @@ libraries = {
 }
 autoplay = "fly"
 
-[node name="Points" type="Node2D" parent="."]
+[node name="LightWeapon" parent="." instance=ExtResource("6_fjrip")]
+Barrel = 2
+Damage = 5.0
+Range = 200.0
+CriticalMultiplier = 1.02
 
-[node name="Single" type="Node2D" parent="Points"]
-
-[node name="Marker2D" type="Marker2D" parent="Points/Single"]
-position = Vector2(0, -17)
-
-[node name="Double" type="Node2D" parent="Points"]
-
-[node name="Marker2D" type="Marker2D" parent="Points/Double"]
-position = Vector2(-13, -10)
-
-[node name="Marker2D2" type="Marker2D" parent="Points/Double"]
-position = Vector2(13, -10)
-
-[node name="DamageArea" type="Node2D" parent="Points"]
-
-[node name="Marker2D" type="Marker2D" parent="Points/DamageArea"]
+[node name="HeavyWeapon" parent="." instance=ExtResource("6_fjrip")]
+Type = 1
+Barrel = 3
+Damage = 20.0
+Range = 200.0
+FireRate = 3.0

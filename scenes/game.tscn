@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://btwvndk3jvooe"]
+[gd_scene load_steps=6 format=3 uid="uid://btwvndk3jvooe"]
 
 [ext_resource type="PackedScene" uid="uid://cdkdu6ho7navy" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Shader" uid="uid://btrcx5ra0fwm" path="res://shaders/water.gdshader" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://cg3kv2yjbx8t6" path="res://scripts/BuffStatsDisplay.cs" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://bisamyve7evtj" path="res://scenes/enemy_base.tscn" id="4_lbhrr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yqjtg"]
 shader = ExtResource("1_yqjtg")
@@ -21,6 +23,44 @@ offset_bottom = 540.0
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(480, 280)
-DamageAreaBulletCount = 8
 BodyColor = Color(0.6102, 0.9, 0.072, 1)
 WingColor = Color(0.1095, 0.337017, 0.73, 1)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 960.0
+offset_bottom = 544.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_bottom = 100.0
+grow_horizontal = 0
+script = ExtResource("3_lnu2h")
+PlayerPath = NodePath("../../Player")
+
+[node name="EnemyBase" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(80, 48)
+MaxHealth = 20.0
+
+[node name="EnemyBase2" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(480, 48)
+MaxHealth = 20.0
+Weakness = 2
+Resistance = 1
+
+[node name="EnemyBase3" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(848, 48)
+MaxHealth = 20.0
+Weakness = 3
+Resistance = 0

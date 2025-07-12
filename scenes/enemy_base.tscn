@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bisamyve7evtj"]
+
+[ext_resource type="Script" uid="uid://dfvxrpui3hdij" path="res://scripts/EnemyBase.cs" id="1_fr7lv"]
+[ext_resource type="PackedScene" uid="uid://hn5xuiw1h7u1" path="res://scenes/damage_popup.tscn" id="2_j1ss0"]
+[ext_resource type="Texture2D" uid="uid://u3bnux4mau32" path="res://icon.svg" id="2_sw0xa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1ss0"]
+size = Vector2(26, 27)
+
+[node name="EnemyBase" type="CharacterBody2D"]
+script = ExtResource("1_fr7lv")
+DamagePopupScene = ExtResource("2_j1ss0")
+MaxHealth = 100.0
+Weakness = 1
+Resistance = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.19209e-07, -1.19209e-07)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_sw0xa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_j1ss0")

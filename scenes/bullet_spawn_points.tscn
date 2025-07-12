@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://7apm0xi6xqbc"]
+
+[node name="BulletSpawnPoints" type="Node2D"]
+
+[node name="SingleBarrel" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="SingleBarrel"]
+position = Vector2(0, -18)
+
+[node name="DoubleBarrel" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="DoubleBarrel"]
+position = Vector2(-15, -10)
+
+[node name="Marker2D2" type="Marker2D" parent="DoubleBarrel"]
+position = Vector2(15, -10)
+
+[node name="TripleBarrel" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="TripleBarrel"]
+position = Vector2(-15, -10)
+
+[node name="Marker2D2" type="Marker2D" parent="TripleBarrel"]
+position = Vector2(0, -18)
+
+[node name="Marker2D3" type="Marker2D" parent="TripleBarrel"]
+position = Vector2(15, -10)
+
+[node name="Spread" type="Node2D" parent="."]
+
+[node name="Marker2D4" type="Marker2D" parent="Spread"]
+position = Vector2(0, -18)
+
+[node name="Marker2D2" type="Marker2D" parent="Spread"]
+position = Vector2(0, 18)
+
+[node name="Marker2D" type="Marker2D" parent="Spread"]
+position = Vector2(-18, -4)
+
+[node name="Marker2D3" type="Marker2D" parent="Spread"]
+position = Vector2(18, -4)
